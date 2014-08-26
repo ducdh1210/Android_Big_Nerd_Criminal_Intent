@@ -5,6 +5,9 @@
   android:versionName="1.0" >
 
   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
+  <uses-feature android:name="android.hardware.Camera"/>
+  <uses-permission android:name="android.permission.CAMERA" />
+
 
   <application 
     android:icon="@drawable/ic_launcher"
@@ -24,6 +27,10 @@
     <activity android:name=".CrimePagerActivity"
       android:label="@string/app_name">
         <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".CrimeListActivity" />
+    </activity>
+    <activity android:name=".CrimeCameraActivity"
+              android:screenOrientation="landscape"
+              android:label="@string/app_name">
     </activity>
   </application>
 
