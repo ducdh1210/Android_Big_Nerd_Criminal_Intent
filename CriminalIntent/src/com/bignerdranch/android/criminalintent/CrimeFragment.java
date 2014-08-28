@@ -6,6 +6,7 @@ import java.util.UUID;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class CrimeFragment extends Fragment {
     public static final String EXTRA_CRIME_ID = "criminalintent.CRIME_ID";
@@ -33,6 +35,8 @@ public class CrimeFragment extends Fragment {
     EditText mTitleField;
     Button mDateButton;
     CheckBox mSolvedCheckBox;
+
+    private ImageButton mPhotoButton;
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
@@ -88,6 +92,19 @@ public class CrimeFragment extends Fragment {
             }
         }
 
+        mPhotoButton = (ImageButton)v.findViewById(R.id.crime_imageButton);
+        mPhotoButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(android.view.View view){
+                Intent i = new Intent(getActivity(), CrimeCameraActivity.class);
+                startActivity(i);
+            }
+
+            // If camera is not available, disable camera functionality
+            PackageManager pm = getActivity().getPackageManager();
+
+        });
+
         mTitleField = (EditText)v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
@@ -109,13 +126,13 @@ public class CrimeFragment extends Fragment {
         updateDate();
 
         mDateButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {                	            	
+            public void onClick(View v) {
                 FragmentManager fm = getActivity()
                         .getSupportFragmentManager();
                 DatePickerFragment dialog = DatePickerFragment
-                    .newInstance(mCrime.getDate());
+                        .newInstance(mCrime.getDate());
                 dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
-                dialog.show(fm, DIALOG_DATE);              	
+                dialog.show(fm, DIALOG_DATE);
             }
         });
 
